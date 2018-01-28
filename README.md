@@ -11,9 +11,12 @@ at the bottom of the *Disk* graph window under the
 ## Install and run
 
 Once you've cloned this repo on your FreeNAS system,
-run the included script `install_disktemp_graphs.sh`.  
+run **as root** the included script `install_disktemp_graphs.sh`.  
 That's it!  Your graphs should immediately appear, 
 and data should start displaying in 10 minutes or so.
+
+Backups of original files are made before the files are
+modified.
 
 ## Maintenance
 
