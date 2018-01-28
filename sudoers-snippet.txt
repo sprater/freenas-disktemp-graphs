@@ -1,0 +1,4 @@
+
+# SMARTCTL command for Disk temperature Graphs
+Cmnd_Alias SMARTCTL = /usr/local/sbin/smartctl
+operator ALL=(root) NOPASSWD: SMARTCTL
