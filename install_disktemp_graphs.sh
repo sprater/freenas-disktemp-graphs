@@ -12,7 +12,10 @@ cp .sudoers.tmp /conf/base/etc/local/sudoers
 rm .sudoers.tmp
 
 cp -p /usr/local/www/freenasUI/reporting/rrd.py /usr/local/www/freenasUI/reporting/rrd.py.BAK-$$
-cp rrd.py /usr/local/www/freenasUI/reporting/rrd.py
+sed '/class DiskTempPlugin(RRDBase, DiskBase):/,+40d' /usr/local/www/freenasUI/reporting/rrd.py > .rrd.py.tmp1
+awk '/class ARCSizePlugin\(RRDBase\):/ { while(getline line<"rrd-snippet.txt") { print line}  } { print }' .rrd.py.tmp1 > .rrd.py.tmp2
+cp .rrd.py.tmp2 /usr/local/www/freenasUI/reporting/rrd.py
+rm .rrd.py.tmp1 .rrd.py.tmp2
 
 cp -p /usr/local/www/freenasUI/reporting/urls.py /usr/local/www/freenasUI/reporting/urls.py.BAK-$$
 cp urls.py /usr/local/www/freenasUI/reporting/urls.py
