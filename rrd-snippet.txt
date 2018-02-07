@@ -1,0 +1,41 @@
+class DiskTempPlugin(RRDBase, DiskBase):
+
+    vertical_label = "Temperature (Celsius)"
+
+    def get_title(self):
+        title = self.identifier.replace("disk-", "")
+        return f'Disk drive temperature on ({title}) {self.get_disk_description(title)}'
+
+    def get_identifiers(self):
+        ids = []
+        for entry in glob.glob('%s/disk-*' % self._base_path):
+            ident = entry.split('-', 1)[-1]
+            if not os.path.exists('/dev/%s' % ident):
+                continue
+            if ident.startswith('pass'):
+                continue
+            if os.path.exists(os.path.join(entry, 'temperature.rrd')):
+                ids.append(ident)
+
+        ids.sort(key=RRDBase._sort_disks)
+        return ids
+
+    def graph(self):
+
+        path = os.path.join(self._base_path, "disk-%s" % self.identifier, "temperature.rrd")
+
+        args = [
+            'DEF:min_rd=%s:value:MIN' % path,
+            'DEF:avg_rd=%s:value:AVERAGE' % path,
+            'DEF:max_rd=%s:value:MAX' % path,
+            'AREA:avg_rd#bfbfff',
+            'LINE1:avg_rd#0000ff:Temperature ',
+            'GPRINT:min_rd:MIN:%5.1lf%s Min\g',
+            'GPRINT:avg_rd:AVERAGE: %5.1lf%s Avg\g',
+            'GPRINT:max_rd:MAX: %5.1lf%s Max\g',
+            'GPRINT:avg_rd:LAST: %5.1lf%s Last\g',
+        ]
+
+        return args
+
+
