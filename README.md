@@ -8,6 +8,9 @@ Once installed, disk temperature graphs will show up
 at the bottom of the *Disk* graph window under the 
 *Reports* tab.
 
+**Important**:  Disks are spun up to check the
+temperature even if they are in sleep mode.
+
 ## Install and run
 
 Once you've cloned this repo on your FreeNAS system,
