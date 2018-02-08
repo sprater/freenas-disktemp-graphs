@@ -22,8 +22,11 @@ while true
 do
 
   # HDD temperatures
-  for i in $(sysctl -n kern.disks | awk '{for (i=NF; i!=0 ; i--) if(match($i, '/ada/')) print $i }' ) ; do
-    echo PUTVAL $HOSTNAME/disk-$i/temperature interval=$INTERVAL `sudo /usr/local/sbin/smartctl -a -n standby /dev/$i | awk '/Temperature_Celsius/{DevTemp=$10;} /Serial Number:/{DevSerNum=$3}; /Device Model:/{DevVendor=$3; DevName=$4} END {printf "N:%s", DevTemp }'`;
+  for i in $(sysctl -n kern.disks | awk '{for (i=NF; i!=0 ; i--) print $i }' ) ; do
+    if sudo /usr/local/sbin/smartctl -i /dev/$i | grep 'SMART support is: Enabled' > /dev/null
+    then
+        echo PUTVAL $HOSTNAME/disk-$i/temperature interval=$INTERVAL `sudo /usr/local/sbin/smartctl -a -n standby /dev/$i | awk '/Temperature_Celsius/{DevTemp=$10;} /Serial Number:/{DevSerNum=$3}; /Device Model:/{DevVendor=$3; DevName=$4} END {printf "N:%s", DevTemp }'`;
+    fi
   done
 
 sleep $INTERVAL
