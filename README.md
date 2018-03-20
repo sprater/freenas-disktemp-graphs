@@ -26,7 +26,7 @@ modified.
 Note that you will need to re-run the `install_disktemp_graphs.sh`
 every time you restore your system or update it.
 
-Works with FreeNAS 11.1-U2.  Each version of this repo will be tagged
+Works with FreeNAS 11.1-U3.  Each version of this repo will be tagged
 with the same version of FreeNAS where this configuration is known to 
 work.
 
